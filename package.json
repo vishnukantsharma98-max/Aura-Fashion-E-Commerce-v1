@@ -1,0 +1,13 @@
+{
+  "name": "aura-fashion-ecommerce",
+  "version": "1.0.0",
+  "description": "Native Android Fashion E-Commerce App built with Kotlin and Jetpack Compose",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "gradle assembleDebug"
+  },
+  "keywords": ["android", "jetpack-compose", "kotlin", "ecommerce", "material3"]
+}

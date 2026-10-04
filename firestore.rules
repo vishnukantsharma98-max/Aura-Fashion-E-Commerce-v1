@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 1. Users collection: Users can read and write only their own profile
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // 2. Products collection: Publicly readable for catalogue browsing, writable only by admin/service account
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 3. Categories collection: Publicly readable, writable only by admin/service account
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 4. Cart collection: Users can read, create, update, and delete only their own cart items
+    match /cart/{cartItemId} {
+      allow read, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid && request.resource.data.userId == request.auth.uid;
+    }
+
+    // 5. Wishlists collection: User-specific wishlist documents
+    match /wishlists/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // 6. Orders collection: Users can create and read their own orders; no modifications after placement
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Aura Fashion - E-Commerce",
+  "description": "Modern native Android fashion e-commerce store built with Kotlin and Jetpack Compose featuring Material 3, catalog browsing, shopping cart, and wishlist.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
